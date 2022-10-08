@@ -1,4 +1,5 @@
+const { regexp, badWords } = require('./lib/array')
 module.exports = {
-    array: require('./lib/array'),
-    regexp: require('./lib/regexp')
+    regexp,
+    badWords
 }
