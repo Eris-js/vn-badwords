@@ -8,7 +8,12 @@ Enjoy!
 Install
 =======
 
+	# NPM
     npm install vn-badwords
+
+	# YARN
+	yarn add vn-badwords
+
 
 Usage
 =====
@@ -16,23 +21,18 @@ Usage
 ```js
 const list = require('vn-badwords'),
 	array = list.array,
-	regex = list.regex;
-const check = regex.test("Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.");
+	regexp = list.regexp;
+let text = "Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.";
 
-/* OUTPUT:
-	check: true
-*/
+// e.g regex
+const isRegexp = regexp.test(text);
+// output: true
+
+// e.g array
+const isArray = array.includes(text);
+// output: true
 
 ```
 
-Changelog
-=======
-
-**1.0.8**:
-* Cập nhật thêm nhận ký
-
-**1.0.7**:
-* Cập nhật thêm từ khóa
-
-
+**1.1.1-hotfix.2**: Cập nhật một số từ, sửa đổi lại lỗi.
 
