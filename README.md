@@ -33,6 +33,6 @@ const isArray = array.includes(text);
 // output: true
 
 ```
-
+Tham gia server hỗ trợ để góp ý cũng như là đóng góp từ khóa nhé: https://discord.gg/pUhzvB4hcs
 **1.1.1-hotfix.2**: Cập nhật một số từ, sửa đổi lại lỗi.
 
