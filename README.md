@@ -36,10 +36,7 @@ badWords(text, '*');
 badWords(text, '*', (badwordsMatch, count) => console.log(badwordsMatch, count));
 // returns value and a callback function
 ```
-<<<<<<< HEAD
 
 =======
 Tham gia server hỗ trợ để góp ý cũng như là đóng góp từ khóa nhé: https://discord.gg/pUhzvB4hcs
-**1.1.1-hotfix.2**: Cập nhật một số từ, sửa đổi lại lỗi.
->>>>>>> e31c98791520881552863ac89b1d1121548d9039
 
