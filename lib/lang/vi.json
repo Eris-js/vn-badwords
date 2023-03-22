@@ -1,4 +1,8 @@
+<<<<<<< HEAD:lib/lang/vi.json
 [
+=======
+const blackList = [
+>>>>>>> e31c98791520881552863ac89b1d1121548d9039:lib/array.js
     "địt",
     "dit",
     "đit",
@@ -455,5 +459,55 @@
     "tổ cha",
     "bà cha mày",
     "cmn",
+<<<<<<< HEAD:lib/lang/vi.json
     "cmnl"
 ]
+=======
+    "cmnl",
+]
+
+function BadWords (str, options, cb) {
+   if (typeof str !== 'string') {
+      throw new Error('[vn-badwords] string argument expected')
+   }
+  
+   options = (typeof options === 'string') ? {replacement: options} : options || {}
+
+   if (!options?.replacement) {
+      options.replacement = '*'
+   }
+  
+   if (typeof options.blackList === 'function') {
+      options.blackList = options.blackList(blackList);
+   }
+   else {
+      options.blackList = blackList;
+   }   
+  
+   const regexp = new RegExp("(" + options.blackList.join("|") + ")", "gi"); // "i" when matching, casing differences are ignored.
+
+   str = str.normalize();
+  
+   const badWordsFiltered = [];
+  
+   const strFiltered = str.replace(regexp, (match) => {
+        badWordsFiltered.push(match);
+        return options.replacement.repeat(match.length);
+   });    
+
+   if (cb) {
+      cb(badWordsFiltered, badWordsFiltered.length)
+   }
+
+   if (options?.validate && !!options.validate) {
+      return regexp.test(str);
+   }
+    
+   return strFiltered;
+}
+
+module.exports = {
+    BadWords,
+    blackList
+}
+>>>>>>> e31c98791520881552863ac89b1d1121548d9039:lib/array.js
