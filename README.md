@@ -19,20 +19,22 @@ Usage
 =====
 
 ```js
-const list = require('vn-badwords'),
-	array = list.array,
-	regexp = list.regexp;
-let text = "Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.";
+const { badWords, blackList } = require('vn-badwords'),
 
-// e.g regex
-const isRegexp = regexp.test(text);
+const text = "Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.";
+
+
+badWords(text, { validate: true });
 // output: true
 
-// e.g array
-const isArray = array.includes(text);
-// output: true
+badWords(text, { replacement: '*' });
+// output: Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con ***.
 
+badWords(text, '*');
+// output similar to BadWords(text, { replacement: '*' });
+
+badWords(text, '*', (badwordsMatch, count) => console.log(badwordsMatch, count));
+// returns value and a callback function
 ```
 
-**1.1.1-hotfix.2**: Cập nhật một số từ, sửa đổi lại lỗi.
 

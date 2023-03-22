@@ -1,4 +1,4 @@
-const badWords = [
+[
     "địt",
     "dit",
     "đit",
@@ -455,12 +455,5 @@ const badWords = [
     "tổ cha",
     "bà cha mày",
     "cmn",
-    "cmnl",
+    "cmnl"
 ]
-
-const regexp = new RegExp("(" + badWords.join("|") + ")", "g");
-
-module.exports = {
-    regexp,
-    badWords
-}
