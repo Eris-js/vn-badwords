@@ -19,9 +19,16 @@ describe('Detect bad words', () => {
 
         it('Should run with extra blacklist if provided', () => {
             const result = badWords('alo alo', {
-                blackList: ['alo'],
+                blackList: (defaultList) => [...defaultList, 'alo'],
             });
             expect(result).toEqual('*** ***');
+        });
+
+        it('Should check with a custom blacklist', () => {
+            const result = badWords('alo dcm', {
+                blackList: () => ['alo'],
+            });
+            expect(result).toEqual('*** dcm');
         });
 
         it('Should replace bad words with the replacement provided in options', () => {
