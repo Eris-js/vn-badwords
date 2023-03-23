@@ -1,3 +1,4 @@
 src
 coverage
-**.config.js
+**.config.ts
+tsconfig.json
