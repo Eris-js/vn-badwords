@@ -57,6 +57,8 @@ type BadWordsOptions = {
 
 type BadWordsCallback = (badWordsMatch: string[], length: number) => unknown;
 
+type BadWords = boolean | string;
+
 const DEFAULT_OPTIONS: BadWordsOptions = {
     blackList,
     replacement: '*',
@@ -90,7 +92,7 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
     }
 }
 
-function badWords(input: string, options?: string | Partial<BadWordsOptions>, callback?: BadWordsCallback) {
+function badWords(input: string, options?: string | Partial<BadWordsOptions>, callback?: BadWordsCallback): BadWords {
     if (!isString(input)) {
         throw new Error('[vn-badwords] string argument expected');
     }
