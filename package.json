@@ -1,6 +1,6 @@
 {
   "name": "vn-badwords",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "This package is for developers to be able to easily integrate bad word checking into their projects.\r This package can return bad words in array or regular expression (regex) form.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

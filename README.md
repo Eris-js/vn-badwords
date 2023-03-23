@@ -51,8 +51,12 @@ badWords(text, '*');
 
 badWords(text, '*', (badwordsMatch, count) => console.log(badwordsMatch, count));
 // returns value and run the callback function
+
+badWords(text, { replacement: '*', blackList: (defaultList) => [...defaultList, 'có', 'làm'] });
+// custom sensitive words. Output: ** *** thì mới ** ăn, không *** mà đòi ** ăn thì ăn con ***.
 ```
 
 =======
+
 Tham gia server hỗ trợ để góp ý cũng như là đóng góp từ khóa nhé: https://discord.gg/pUhzvB4hcs
 
