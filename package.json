@@ -19,11 +19,15 @@
   "license": "ISC",
   "scripts": {
     "run-test": "tsx test.ts",
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "devDependencies": {
+    "@vitest/coverage-c8": "^0.29.7",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   }
 }
