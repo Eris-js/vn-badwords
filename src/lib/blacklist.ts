@@ -77,19 +77,20 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
         };
     }
 
-    const mergedBlackList = [
-        ...DEFAULT_OPTIONS.blackList,
-        ...(extraConfig.blackList && isFunc(extraConfig.blackList)
-            ? extraConfig.blackList(blackList)
-            : []
-        ),
-    ];
+   const { blackList: selfBlackList, ...ortherExtraConfig } = extraConfig;
 
-    return {
-        ...DEFAULT_OPTIONS,
-        ...extraConfig,
-        ...isArray(mergedBlackList) && !!mergedBlackList.length ? { blackList: mergedBlackList }:{}
-    }
+   const customBlackList =
+      selfBlackList && isFunc(selfBlackList)
+        ? extraConfig.blackList(DEFAULT_OPTIONS.blackList)
+        : [];
+  
+   return {
+      ...DEFAULT_OPTIONS,
+      ...ortherExtraConfig,
+      ...(isArray(customBlackList) && !!customBlackList.length
+        ? { blackList: customBlackList }
+        : {})
+   };
 }
 
 function badWords(input: string, options?: string | Partial<BadWordsOptions>, callback?: BadWordsCallback): BadWords {
