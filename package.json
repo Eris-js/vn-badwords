@@ -17,10 +17,12 @@
   "author": "Quang Sáng",
   "license": "ISC",
   "scripts": {
-    "run-test": "node test.ts",
+    "run-test": "tsx test.ts",
     "build": "tsup"
   },
   "devDependencies": {
-    "tsup": "^6.7.0"
+    "tsup": "^6.7.0",
+    "tsx": "^3.12.6",
+    "typescript": "^5.0.2"
   }
 }
