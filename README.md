@@ -19,12 +19,25 @@ yarn add vn-badwords
 pnpm i vn-badwords
 ```
 
+Import
+=====
+
+CommonJS (Node)
+
+```js
+const { badWords, blackList } = require('vn-badwords');
+```
+
+ES6
+
+```js
+import { badWords, blackList } from 'vn-badwords';
+```
+
 Usage
 =====
 
 ```js
-const { badWords, blackList } = require('vn-badwords');
-
 const text = "Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.";
 
 badWords(text, { validate: true });
