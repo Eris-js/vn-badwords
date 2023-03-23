@@ -2,9 +2,10 @@
   "name": "vn-badwords",
   "version": "1.1.6",
   "description": "This package is for developers to be able to easily integrate bad word checking into their projects.\r This package can return bad words in array or regular expression (regex) form.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "directories": {
-    "lib": "lib"
+    "lib": "src/lib"
   },
   "homepage": "https://github.com/ProCoderEris/vn-badwords",
   "keywords": [
@@ -14,5 +15,12 @@
     "vn-badwords"
   ],
   "author": "Quang Sáng",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "run-test": "node test.ts",
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  }
 }
