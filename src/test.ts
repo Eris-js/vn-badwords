@@ -1,4 +1,4 @@
-const { badWords } = require('./index');
+import { badWords } from './index';
 
 const text = 'Không là mà đòi có ăn thì ăn con cặc, ăn cứt';
 

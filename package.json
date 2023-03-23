@@ -4,6 +4,7 @@
   "description": "This package is for developers to be able to easily integrate bad word checking into their projects.\r This package can return bad words in array or regular expression (regex) form.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "directories": {
     "lib": "src/lib"
   },
@@ -17,10 +18,16 @@
   "author": "Quang Sáng",
   "license": "ISC",
   "scripts": {
-    "run-test": "node test.ts",
-    "build": "tsup"
+    "run-test": "tsx test.ts",
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
   },
   "devDependencies": {
-    "tsup": "^6.7.0"
+    "@vitest/coverage-c8": "^0.29.7",
+    "tsup": "^6.7.0",
+    "tsx": "^3.12.6",
+    "typescript": "^5.0.2",
+    "vitest": "^0.29.7"
   }
 }
