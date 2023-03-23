@@ -1,4 +1,4 @@
-import blackList from './lang/vi.json';
+import DEFAULT_BLACKLIST from './lang/vi.json';
 
 type DefinitelyString<T> = Extract<T, string> extends never
   ? string
@@ -65,7 +65,7 @@ export type BadWordsCallback = (badWordsMatch: string[], length: number) => unkn
 type BadWords = boolean | string;
 
 const DEFAULT_OPTIONS: BadWordsOptions = {
-    blackList: () => blackList,
+    blackList: () => DEFAULT_BLACKLIST,
     replacement: '*',
     validate: false,
 };
@@ -74,14 +74,14 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>): BadWords
     if (!extraConfig) {
         return {
           ...DEFAULT_OPTIONS,
-          blackList,
+          blackList: DEFAULT_BLACKLIST,
         };
     }
 
     if (isString(extraConfig)) {
         return {
             ...DEFAULT_OPTIONS,
-            blackList,
+            blackList: DEFAULT_BLACKLIST,
             replacement: extraConfig,
         };
     }
@@ -90,10 +90,10 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>): BadWords
 
    let customBlackList =
       extraBlacklist && isFunc(extraBlacklist)
-        ? extraBlacklist(blackList)
+        ? extraBlacklist(DEFAULT_BLACKLIST)
         : [];
    if (!isArray(customBlackList) || customBlackList.length <= 0) {
-     customBlackList = blackList;
+     customBlackList = DEFAULT_BLACKLIST;
    }
   
    return {
@@ -133,4 +133,4 @@ export function badWords(input: string, options?: string | Partial<BadWordsOptio
     return strReplace;
 }
 
-export { blackList };
+export { DEFAULT_BLACKLIST as blackList };
