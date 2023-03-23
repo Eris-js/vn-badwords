@@ -1,5 +1,38 @@
 import blackList from './lang/vi.json';
 
+type DefinitelyString<T> = Extract<T, string> extends never
+  ? string
+  : Extract<T, string> extends any
+  ? string
+  : Extract<T, string>;
+
+function isString<T>(input: T | string): input is DefinitelyString<T> {
+  return typeof input === 'string';
+}
+
+type DefinitelyArray<T> = Extract<
+  T,
+  Array<any> | ReadonlyArray<any>
+> extends never
+  ? ReadonlyArray<unknown>
+  : Extract<T, Array<any> | ReadonlyArray<any>>;
+
+function isArray<T>(
+  input: T | ReadonlyArray<unknown>
+): input is DefinitelyArray<T> {
+  return Array.isArray(input);
+}
+
+type DefinitelyFunction<T> = Extract<T, Function> extends never
+  ? Function
+  : Extract<T, Function>;
+
+function isFunc<T>(
+  input: T | Function
+): input is DefinitelyFunction<T> {
+  return typeof input === 'function';
+}
+
 type BadWordsOptions = {
     /**
      * Extra words to add to the black list
@@ -24,10 +57,6 @@ type BadWordsOptions = {
 
 type BadWordsCallback = (badWordsMatch: string[], length: number) => unknown;
 
-function isString(input: unknown): input is string {
-    return typeof input === 'string';
-}
-
 const DEFAULT_OPTIONS: BadWordsOptions = {
     blackList,
     replacement: '*',
@@ -48,8 +77,8 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
 
     const mergedBlackList = [
         ...DEFAULT_OPTIONS.blackList,
-        ...(extraConfig.blackList && Array.isArray(extraConfig.blackList)
-            ? extraConfig.blackList
+        ...(extraConfig.blackList && isFunc(extraConfig.blackList)
+            ? extraConfig.blackList(blackList)
             : []
         ),
     ];
@@ -57,7 +86,7 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
     return {
         ...DEFAULT_OPTIONS,
         ...extraConfig,
-        blackList: mergedBlackList,
+        ...isArray(mergedBlackList) && !!mergedBlackList.length ? { blackList: mergedBlackList }:{}
     }
 }
 
@@ -73,22 +102,22 @@ function badWords(input: string, options?: string | Partial<BadWordsOptions>, ca
 
     input = input.normalize();
 
-    const badWordsFiltered: string[] = [];
+    const badWordsMatched: string[] = [];
 
-    const strFiltered = input.replace(regexp, (match) => {
-        badWordsFiltered.push(match);
+    const strReplace = input.replace(regexp, (match) => {
+        badWordsMatched.push(match);
         return config.replacement.repeat(match.length);
     });
 
     if (callback) {
-        callback(badWordsFiltered, badWordsFiltered.length)
+        callback(badWordsMatched, badWordsMatched.length)
     }
 
     if (config.validate) {
         return regexp.test(input);
     }
 
-    return strFiltered;
+    return strReplace;
 }
 
 export {
