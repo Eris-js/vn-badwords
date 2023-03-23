@@ -81,7 +81,7 @@ function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
 
    const customBlackList =
       selfBlackList && isFunc(selfBlackList)
-        ? extraConfig.blackList(DEFAULT_OPTIONS.blackList)
+        ? selfBlackList(DEFAULT_OPTIONS.blackList)
         : [];
   
    return {
