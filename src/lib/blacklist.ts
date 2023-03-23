@@ -1,4 +1,4 @@
-import blackList from './lang/vi.json';
+import DEFAULT_BLACKLIST from './lang/vi.json';
 
 type DefinitelyString<T> = Extract<T, string> extends never
   ? string
@@ -33,12 +33,13 @@ function isFunc<T>(
   return typeof input === 'function';
 }
 
-type BadWordsOptions = {
+export type BadWordsOptions = {
     /**
-     * Extra words to add to the black list
+     * Callback to create a custom blacklist.
+     * Can be used to extend the default blacklist.
      * @default []
      */
-    readonly blackList: string[];
+    readonly blackList: (defaultBlacklist: string[]) => string[];
 
     /**
      * The string to replace the bad words with
@@ -55,45 +56,54 @@ type BadWordsOptions = {
     readonly validate: boolean;
 }
 
-type BadWordsCallback = (badWordsMatch: string[], length: number) => unknown;
+type BadWordsConfig = Omit<BadWordsOptions, 'blackList'> & {
+  readonly blackList: string[];
+}
+
+export type BadWordsCallback = (badWordsMatch: string[], length: number) => unknown;
 
 type BadWords = boolean | string;
 
 const DEFAULT_OPTIONS: BadWordsOptions = {
-    blackList,
+    blackList: () => DEFAULT_BLACKLIST,
     replacement: '*',
     validate: false,
 };
 
-function createConfig(extraConfig?: string | Partial<BadWordsOptions>) {
+function createConfig(extraConfig?: string | Partial<BadWordsOptions>): BadWordsConfig {
     if (!extraConfig) {
-        return DEFAULT_OPTIONS;
+        return {
+          ...DEFAULT_OPTIONS,
+          blackList: DEFAULT_BLACKLIST,
+        };
     }
 
     if (isString(extraConfig)) {
         return {
             ...DEFAULT_OPTIONS,
+            blackList: DEFAULT_BLACKLIST,
             replacement: extraConfig,
         };
     }
 
-   const { blackList: selfBlackList, ...ortherExtraConfig } = extraConfig;
+   const { blackList: extraBlacklist, ...otherExtraConfig } = extraConfig;
 
-   const customBlackList =
-      selfBlackList && isFunc(selfBlackList)
-        ? selfBlackList(DEFAULT_OPTIONS.blackList)
+   let customBlackList =
+      extraBlacklist && isFunc(extraBlacklist)
+        ? extraBlacklist(DEFAULT_BLACKLIST)
         : [];
+   if (!isArray(customBlackList) || customBlackList.length <= 0) {
+     customBlackList = DEFAULT_BLACKLIST;
+   }
   
    return {
       ...DEFAULT_OPTIONS,
-      ...ortherExtraConfig,
-      ...(isArray(customBlackList) && !!customBlackList.length
-        ? { blackList: customBlackList }
-        : {})
+      ...otherExtraConfig,
+      blackList: customBlackList,
    };
 }
 
-function badWords(input: string, options?: string | Partial<BadWordsOptions>, callback?: BadWordsCallback): BadWords {
+export function badWords(input: string, options?: string | Partial<BadWordsOptions>, callback?: BadWordsCallback): BadWords {
     if (!isString(input)) {
         throw new Error('[vn-badwords] string argument expected');
     }
@@ -123,7 +133,4 @@ function badWords(input: string, options?: string | Partial<BadWordsOptions>, ca
     return strReplace;
 }
 
-export {
-    badWords,
-    blackList,
-};
+export { DEFAULT_BLACKLIST as blackList };
