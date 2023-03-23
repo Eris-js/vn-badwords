@@ -8,21 +8,24 @@ Enjoy!
 Install
 =======
 
-	# NPM
-    npm install vn-badwords
+```shell
+# NPM
+npm install vn-badwords
 
-	# YARN
-	yarn add vn-badwords
+# YARN
+yarn add vn-badwords
 
+# PNPM
+pnpm i vn-badwords
+```
 
 Usage
 =====
 
 ```js
-const { badWords, blackList } = require('vn-badwords'),
+const { badWords, blackList } = require('vn-badwords');
 
 const text = "Có làm thì mới có ăn, không làm mà đòi có ăn thì ăn con cặc.";
-
 
 badWords(text, { validate: true });
 // output: true
@@ -34,7 +37,7 @@ badWords(text, '*');
 // output similar to BadWords(text, { replacement: '*' });
 
 badWords(text, '*', (badwordsMatch, count) => console.log(badwordsMatch, count));
-// returns value and a callback function
+// returns value and run the callback function
 ```
 
 =======
