@@ -1,32 +1,67 @@
 const blackList = require('./lang/vi.json');
 
-function badWords(str, options, cb) {
-    if (typeof str !== 'string') throw new Error('[vn-badwords] string argument expected')
+function isString(input) {
+    return typeof input === 'string';
+}
 
-    options = (typeof options === 'string') ? { replacement: options } : options || {}
+const DEFAULT_OPTIONS = {
+    blackList: [],
+    replacement: '*',
+    validate: false,
+};
 
-    if (!options?.replacement) options.replacement = '*'
+function createConfig(extraConfig) {
+    if (!extraConfig) {
+        return DEFAULT_OPTIONS;
+    }
 
-    if (typeof options.blackList === 'function') options.blackList = options.blackList(blackList);
-    else options.blackList = blackList;
+    if (isString(extraConfig)) {
+        return {
+            ...DEFAULT_OPTIONS,
+            replacement: extraConfig,
+        };
+    }
 
-    const regexp = new RegExp("(" + options.blackList.join("|") + ")", "gi"); // "i" when matching, casing differences are ignored.
+    const mergedBlackList = [
+        ...blackList,
+        ...(extraConfig.blackList && Array.isArray(extraConfig.blackList)
+            ? extraConfig.blackList
+            : []
+        ),
+    ];
 
-    str = str.normalize();
+    return {
+        ...DEFAULT_OPTIONS,
+        ...extraConfig,
+        blackList: mergedBlackList,
+    }
+}
+
+function badWords(input, options, callback) {
+    if (!isString(input)) {
+        throw new Error('[vn-badwords] string argument expected');
+    }
+
+    const config = createConfig(options);
+
+    // "i" when matching, casing differences are ignored.
+    const regexp = new RegExp("(" + config.blackList.join("|") + ")", "gi");
+
+    input = input.normalize();
 
     const badWordsFiltered = [];
 
-    const strFiltered = str.replace(regexp, (match) => {
+    const strFiltered = input.replace(regexp, (match) => {
         badWordsFiltered.push(match);
-        return options.replacement.repeat(match.length);
+        return config.replacement.repeat(match.length);
     });
 
-    if (cb) {
-        cb(badWordsFiltered, badWordsFiltered.length)
+    if (callback) {
+        callback(badWordsFiltered, badWordsFiltered.length)
     }
 
-    if (options?.validate && !!options.validate) {
-        return regexp.test(str);
+    if (config.validate) {
+        return regexp.test(input);
     }
 
     return strFiltered;
